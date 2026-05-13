@@ -1,0 +1,64 @@
+<div class="page-shell">
+      <header-card title="Payment Reports" subtitle="Supplier payable reports generated after goods receipt.">
+        <button class="btn-soft" (click)="load()">↻</button>
+      </header-card>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="panel p-6">
+          <p class="text-[11px] font-black uppercase tracking-widest text-gray-400">Pending Payable</p>
+          <h2 class="text-2xl font-black text-amber-700 mt-2">INR {{money(pendingTotal)}}</h2>
+        </div>
+        <div class="panel p-6">
+          <p class="text-[11px] font-black uppercase tracking-widest text-gray-400">Paid</p>
+          <h2 class="text-2xl font-black text-emerald-700 mt-2">INR {{money(paidTotal)}}</h2>
+        </div>
+        <div class="panel p-6">
+          <p class="text-[11px] font-black uppercase tracking-widest text-gray-400">Reports</p>
+          <h2 class="text-2xl font-black text-gray-950 mt-2">{{reports.length}}</h2>
+        </div>
+      </div>
+
+      <div class="ui-table-card">
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[920px] text-left">
+            <thead class="bg-gray-50/80">
+              <tr>
+                <th class="ui-th">Payment ID</th>
+                <th class="ui-th">PO ID</th>
+                <th class="ui-th">Supplier</th>
+                <th class="ui-th">Product Details</th>
+                <th class="ui-th">Payable Amount</th>
+                <th class="ui-th">Status</th>
+                <th class="ui-th">Razorpay Order</th>
+                <th class="ui-th text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr *ngFor="let report of reports" class="hover:bg-gray-50/80 align-top">
+                <td class="ui-td"><span class="text-base font-bold text-gray-800">#{{report.paymentId}}</span></td>
+                <td class="ui-td"><span class="text-base font-bold text-gray-800">PO #{{report.poId}}</span></td>
+                <td class="ui-td"><span class="text-base font-bold text-gray-800">{{supplierName(report.supplierId)}}</span></td>
+                <td class="ui-td max-w-md whitespace-normal">
+                  <div class="rounded-2xl bg-gray-50 border border-gray-100 px-4 py-3 text-sm font-bold text-gray-700 leading-7">
+                    {{productDetails(report)}}
+                  </div>
+                </td>
+                <td class="ui-td">
+                  <div class="font-black text-gray-950">{{report.currency || 'INR'}} {{money(report.amount)}}</div>
+                  <div *ngIf="report.status !== 'SUCCESS'" class="text-[10px] font-black uppercase tracking-widest text-amber-600 mt-1">Payable</div>
+                </td>
+                <td class="ui-td"><span class="badge" [ngClass]="statusClass(report.status)">{{report.status}}</span></td>
+                <td class="ui-td">{{report.razorpayOrderId}}</td>
+                <td class="ui-td text-right">
+                  <button class="btn-primary" *ngIf="report.status !== 'SUCCESS' && canPayWithRazorpay(report)" (click)="pay(report)">Pay</button>
+                  <div *ngIf="report.status !== 'SUCCESS' && !canPayWithRazorpay(report)" class="text-[10px] font-black uppercase tracking-widest text-red-600">
+                    Split required
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="!reports.length" class="p-8 md:p-16 text-center text-xs font-black uppercase tracking-widest text-gray-300">No payment reports found</div>
+      </div>
+    </div>

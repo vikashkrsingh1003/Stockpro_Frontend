@@ -1,0 +1,148 @@
+<div class="page-shell">
+  <section class="dashboard-hero">
+    <div class="hero-copy">
+      <span class="hero-chip">Live Control</span>
+      <h1>Control Center</h1>
+      <p>Real-time inventory intelligence across products, warehouses, alerts, and procurement.</p>
+      <div class="hero-meta">
+        <span [class.hero-pulse-loading]="loading"></span>
+        <strong>{{loading ? "Refreshing" : "Synced"}}</strong>
+        <small>{{lastUpdated | date:'shortTime'}}</small>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <button class="btn-soft" type="button" (click)="load()" [disabled]="loading">↻</button>
+      <button class="btn-primary" routerLink="/products/add" *ngIf="role !== 'OFFICER'">+ New Asset</button>
+    </div>
+  </section>
+
+  <section class="kpi-grid">
+    <a *ngFor="let card of kpiCards" class="kpi-card" [routerLink]="card.path" [ngClass]="'kpi-' + card.color">
+      <div class="kpi-top">
+        <span class="kpi-icon">{{card.color === 'blue' ? '▣' : card.color === 'purple' ? '▤' : card.color === 'green' ? '↗' : '!'}}</span>
+        <span class="kpi-trend">{{card.trend}}</span>
+      </div>
+      <p>{{card.label}}</p>
+      <strong>{{card.value}}</strong>
+      <small>{{card.sub}}</small>
+    </a>
+  </section>
+
+  <section class="dashboard-grid">
+    <article class="panel utilization-panel">
+      <div class="panel-head">
+        <div>
+          <h2>Warehouse Utilization</h2>
+          <p>Select a node to inspect live capacity pressure.</p>
+        </div>
+        <span class="panel-badge">{{utilizationRows.length}} nodes</span>
+      </div>
+
+      <div *ngIf="!utilizationRows.length" class="empty-state">No warehouse data</div>
+
+      <div *ngIf="utilizationRows.length" class="utilization-layout">
+        <div class="radial-card">
+          <div class="radial-meter" [style.--value]="activeWarehouse?.percent || 0">
+            <span>{{number(activeWarehouse?.percent)}}%</span>
+          </div>
+          <h3>{{activeWarehouse?.name}}</h3>
+          <p>{{activeWarehouse?.used || 0}} / {{activeWarehouse?.capacity || 0}} units used</p>
+          <strong [ngClass]="statusClass(activeWarehouse?.status)">{{activeWarehouse?.status || "NORMAL"}}</strong>
+        </div>
+
+        <div class="warehouse-list">
+          <button
+            type="button"
+            *ngFor="let row of utilizationRows"
+            class="warehouse-row"
+            [class.warehouse-row-active]="activeWarehouse === row"
+            (click)="selectWarehouse(row)">
+            <div>
+              <strong>{{row.name}}</strong>
+              <span>{{row.status}}</span>
+            </div>
+            <div class="warehouse-progress">
+              <small>{{number(row.percent)}}%</small>
+              <div><span [style.width.%]="row.percent" [ngClass]="statusClass(row.status)"></span></div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <aside class="quick-panel">
+      <div class="panel-head panel-head-dark">
+        <div>
+          <h2>Quick Navigation</h2>
+          <p>Jump into common workflows.</p>
+        </div>
+      </div>
+
+      <a *ngFor="let link of quickLinks" [routerLink]="link.path" class="quick-link">
+        <span>{{link.icon}}</span>
+        <div>
+          <strong>{{link.label}}</strong>
+          <small>{{link.desc}}</small>
+        </div>
+        <b>→</b>
+      </a>
+    </aside>
+  </section>
+
+  <section class="insight-grid">
+    <article class="panel stock-panel">
+      <div class="panel-head">
+        <div>
+          <h2>Stock Movement Mix</h2>
+          <p>Product movement health from analytics.</p>
+        </div>
+      </div>
+
+      <div class="stock-mix">
+        <div *ngFor="let item of stockHealthItems" class="stock-pill">
+          <span [ngClass]="item.color"></span>
+          <div>
+            <strong>{{item.value}}</strong>
+            <small>{{item.label}}</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="top-products">
+        <div *ngFor="let item of topMoving.slice(0, 4)" class="top-product-row">
+          <div>
+            <strong>{{productLabel(item)}}</strong>
+            <span>{{productSubLabel(item)}} · {{item.movementCategory || "ACTIVE"}}</span>
+          </div>
+          <small>{{productMovementValue(item)}}</small>
+        </div>
+        <div *ngIf="!topMoving.length" class="mini-empty">No product movement data</div>
+      </div>
+    </article>
+
+    <article class="panel supplier-panel">
+      <div class="panel-head">
+        <div>
+          <h2>Supplier Spend</h2>
+          <p>Top procurement cost drivers.</p>
+        </div>
+        <a routerLink="/reports">View reports</a>
+      </div>
+
+      <div class="supplier-list">
+        <div *ngFor="let supplier of supplierSpend; let i = index" class="supplier-row">
+          <span>{{i + 1}}</span>
+          <div>
+            <strong>{{supplierLabel(supplier)}}</strong>
+            <small>{{money(supplier.totalSpend || supplier.amount || 0)}}</small>
+          </div>
+          <div class="supplier-bar">
+            <b [style.width.%]="boundedPercent((supplier.totalSpend || supplier.amount || 0) / ((supplierSpend[0]?.totalSpend || supplierSpend[0]?.amount || 1)) * 100)"></b>
+          </div>
+        </div>
+        <div *ngIf="!supplierSpend.length" class="mini-empty">No supplier spend data</div>
+      </div>
+    </article>
+  </section>
+</div>

@@ -1,0 +1,173 @@
+.report-card {
+  background: #fff;
+  border: 1px solid rgb(243 244 246);
+  border-radius: 32px;
+  padding: 28px;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 0.04);
+  min-height: 330px;
+}
+
+.report-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.report-icon {
+  height: 52px;
+  width: 52px;
+  border-radius: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 900;
+  flex: 0 0 auto;
+}
+
+.report-title {
+  font-size: 24px;
+  line-height: 1.1;
+  font-weight: 900;
+  color: rgb(3 7 18);
+}
+
+.report-subtitle {
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgb(156 163 175);
+}
+
+.report-csv {
+  border-radius: 18px;
+  background: rgb(249 250 251);
+  padding: 12px 18px;
+  font-size: 13px;
+  font-weight: 900;
+  color: rgb(75 85 99);
+  transition: background-color 0.15s ease;
+}
+
+.report-csv:hover {
+  background: rgb(243 244 246);
+}
+
+.report-th {
+  padding: 12px 0;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgb(156 163 175);
+}
+
+.report-td {
+  padding: 18px 0;
+  color: rgb(55 65 81);
+}
+
+.report-chip {
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+}
+
+.report-empty {
+  padding: 56px 16px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: rgb(209 213 219);
+}
+
+@media (min-width: 768px) {
+  .report-card {
+    padding: 40px;
+    border-radius: 40px;
+  }
+
+  .report-title {
+    font-size: 28px;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.page-shell > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1.25rem ;
+  margin-bottom: 0;
+}
+
+.page-shell {
+  padding: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .page-shell {
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .page-shell > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.75rem ;
+    margin-bottom: 0;
+  }
+
+  .page-shell {
+    padding: 2rem;
+  }
+}
+
+.page-shell {
+  animation: fade .45s ease-out both;
+}
+
+.btn-soft {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background-color: rgb(249 250 251);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  color: rgb(75 85 99);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.btn-soft:hover {
+  background-color: rgb(243 244 246);
+}
+
+@media (min-width: 768px) {
+  .btn-soft {
+    border-radius: 1rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}

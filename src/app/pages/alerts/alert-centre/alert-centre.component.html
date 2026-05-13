@@ -1,0 +1,52 @@
+<div class="page-shell">
+      <div class="alert-hero">
+        <div class="flex items-center gap-4 min-w-0">
+          <span class="alert-title-icon">♧</span>
+          <div class="min-w-0">
+            <h1>Alert Centre</h1>
+            <p>Real-time inventory & procurement alerts</p>
+          </div>
+        </div>
+        <button class="alert-refresh" (click)="load()">⟳</button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div class="alert-stat bg-slate-50"><span>Total Alerts</span><strong>{{alerts.length}}</strong></div>
+        <div class="alert-stat bg-amber-50"><span>Unacknowledged</span><strong class="text-amber-600">{{unack}}</strong></div>
+        <div class="alert-stat bg-red-50"><span>Critical</span><strong class="text-red-600">{{critical}}</strong></div>
+        <div class="alert-stat bg-emerald-50"><span>Resolved</span><strong class="text-emerald-600">{{resolved}}</strong></div>
+      </div>
+
+      <div class="alert-filter-panel">
+        <div class="alert-filter-label">▽ Filter</div>
+        <select class="alert-select" [(ngModel)]="filters.type" (ngModelChange)="load()"><option value="">All Types</option><option>LOW_STOCK</option><option>OVERSTOCK</option><option>PO_PENDING</option><option>OVERDUE_PO</option><option>SYSTEM</option></select>
+        <select class="alert-select" [(ngModel)]="filters.severity" (ngModelChange)="load()"><option value="">All Severities</option><option>CRITICAL</option><option>WARNING</option><option>INFO</option></select>
+        <select class="alert-select" [(ngModel)]="filters.acknowledged" (ngModelChange)="load()"><option value="">All Status</option><option value="false">Open</option><option value="true">Resolved</option></select>
+      </div>
+
+      <div *ngIf="error" class="bg-red-50 border border-red-100 rounded-2xl px-5 py-4 text-red-700 font-bold">{{error}}</div>
+      <div class="alert-table-card">
+        <div class="overflow-x-auto">
+          <table class="alert-table">
+            <thead>
+              <tr><th>Severity</th><th>Type</th><th>Title</th><th>Message</th><th>Product</th><th>Date & Time</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let a of alerts" class="alert-row">
+                <td><span class="alert-severity" [ngClass]="severityClass(a.severity)">● {{a.severity || 'INFO'}}</span></td>
+                <td><strong>{{typeLabel(a.alertType)}}</strong></td>
+                <td><strong class="alert-title">{{a.title || 'Alert'}}</strong></td>
+                <td><span class="alert-message">{{a.message || 'No message provided'}}</span></td>
+                <td><span class="alert-ref">{{reference(a)}}</span></td>
+                <td><time class="alert-time">{{a.createdAt | date:'dd MMM, h:mm a'}}</time></td>
+                <td>
+                  <button class="alert-open" *ngIf="!a.acknowledged" (click)="ack(a)">Acknowledge</button>
+                  <span *ngIf="a.acknowledged" class="alert-resolved">✓ Resolved</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="!alerts.length && !error" class="p-8 md:p-16 text-center text-gray-300 font-black uppercase tracking-widest text-xs">No alerts found</div>
+      </div>
+    </div>

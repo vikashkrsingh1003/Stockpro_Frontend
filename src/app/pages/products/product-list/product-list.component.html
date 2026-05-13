@@ -1,0 +1,28 @@
+<div class="page-shell">
+      <header-card title="Product Inventory" subtitle="Manage and track your global stock levels.">
+        <button class="btn-soft" *ngIf="canManage" (click)="showInactive=!showInactive">Deactivated ({{inactive.length}})</button>
+        <button class="btn-primary" *ngIf="canManage" routerLink="/products/add">+ Add New Product</button>
+      </header-card>
+      <div *ngIf="showInactive" class="bg-amber-50 border border-amber-100 rounded-2xl md:rounded-[32px] p-4 md:p-8 space-y-4">
+        <h2 class="font-black text-amber-700 uppercase tracking-widest text-sm">Deactivated Products</h2>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div *ngFor="let p of inactive" class="bg-white rounded-2xl p-4 md:p-5 border border-amber-100 flex flex-col sm:flex-row sm:justify-between gap-4">
+            <div><p class="font-bold text-gray-900 text-sm">{{p.name}}</p><p class="text-[10px] text-gray-400">SKU: {{p.sku}}</p></div>
+            <button class="px-4 py-2 bg-emerald-500 text-white text-xs font-black rounded-xl" (click)="reactivate(p)">Reactivate</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-filter-bar">
+        <div class="product-search-wrap">
+          <span class="text-gray-400 text-xl">⌕</span>
+          <input class="product-search-input" placeholder="Search by name or SKU..." [(ngModel)]="search" (ngModelChange)="load()">
+        </div>
+        <div class="product-category-wrap">
+          <span class="text-gray-400">▽</span>
+          <select class="product-category-select" [(ngModel)]="category" (ngModelChange)="load()">
+            <option value="All">All Categories</option><option>ELECTRONIC</option><option>FURNITURE</option><option>RAW_MATERIAL</option><option>CLOTHING</option><option>STATIONERY</option>
+          </select>
+        </div>
+      </div>
+      <data-table [rows]="products" kind="products" [canManage]="canManage" (refresh)="loadAll()" (deactivate)="deactivate($event)" />
+    </div>

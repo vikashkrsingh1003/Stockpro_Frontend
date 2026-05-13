@@ -1,0 +1,93 @@
+<div class="app-shell">
+  <div
+    *ngIf="open"
+    class="sidebar-backdrop"
+    [class.dashboard-backdrop]="isDashboard"
+    (click)="open=false">
+  </div>
+
+  <aside
+    class="app-sidebar"
+    [class.sidebar-docked]="!isDashboard"
+    [class.sidebar-open]="open"
+    [class.sidebar-closed]="!open">
+    <div class="sidebar-brand">
+      <div class="brand-mark">S</div>
+      <span>StockPro</span>
+      <button
+        type="button"
+        class="sidebar-close"
+        [class.desktop-hidden]="!isDashboard"
+        (click)="open=false"
+        aria-label="Close menu">
+        ×
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a
+        *ngFor="let item of menu"
+        [routerLink]="item.path"
+        routerLinkActive="nav-active"
+        (click)="closeMobileMenu()"
+        class="nav-link">
+        <span class="nav-icon">{{item.icon}}</span>
+        <span>{{item.name}}</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button (click)="auth.logout()" class="logout-btn">
+        <span>⎋</span>
+        <b>Logout</b>
+      </button>
+    </div>
+  </aside>
+
+  <div class="app-content">
+    <header class="app-topbar">
+      <button
+        type="button"
+        (click)="open=!open"
+        class="menu-toggle"
+        [class.desktop-hidden]="!isDashboard"
+        aria-label="Toggle menu">
+        {{open ? "×" : "☰"}}
+      </button>
+
+      <div class="topbar-actions">
+        <button
+          type="button"
+          class="theme-toggle"
+          (click)="toggleTheme()"
+          [attr.aria-label]="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'">
+          <span>{{theme === "dark" ? "☾" : "☀"}}</span>
+          <b>{{theme === "dark" ? "Dark" : "Light"}}</b>
+        </button>
+
+        <button routerLink="/alerts" class="alert-button" aria-label="Open alerts">
+          🔔
+          <span *ngIf="unread > 0">{{unread > 99 ? "99+" : unread}}</span>
+        </button>
+
+        <button type="button" routerLink="/profile" class="profile-chip">
+          <div class="profile-avatar">👤</div>
+          <div class="profile-copy">
+            <p>{{profileName || email}}</p>
+            <small>{{role}}</small>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <div class="app-main-inner">
+        <router-outlet />
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      © 2026 StockPro Inventory Systems. All rights reserved.
+    </footer>
+  </div>
+</div>

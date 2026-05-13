@@ -1,0 +1,43 @@
+<div class="ui-modal-overlay">
+    <div class="ui-modal max-w-2xl">
+      <button class="ui-modal-close" (click)="close.emit()">×</button>
+      <h2>New Purchase Order</h2>
+      <p>Create a draft procurement order for a supplier and warehouse.</p>
+      <div class="grid md:grid-cols-2 gap-4">
+        <label class="ui-field">
+          <span>Supplier</span>
+          <select class="input" [(ngModel)]="form.supplierId">
+            <option value="">Select supplier</option>
+            <option *ngFor="let supplier of suppliers" [value]="supplierId(supplier)">
+              {{supplierLabel(supplier)}}
+            </option>
+          </select>
+        </label>
+        <label class="ui-field">
+          <span>Warehouse</span>
+          <select class="input" [(ngModel)]="form.warehouseId">
+            <option value="">Select warehouse</option>
+            <option *ngFor="let warehouse of warehouses" [value]="warehouseId(warehouse)">
+              {{warehouseLabel(warehouse)}}
+            </option>
+          </select>
+        </label>
+      </div>
+      <div class="grid md:grid-cols-3 gap-4">
+        <label class="ui-field md:col-span-1">
+          <span>Product</span>
+          <select class="input" [(ngModel)]="line.sku">
+            <option value="">Select product</option>
+            <option *ngFor="let product of products" [value]="productSku(product)">
+              {{productLabel(product)}}
+            </option>
+          </select>
+        </label>
+        <label class="ui-field"><span>Quantity</span><input class="input" type="number" min="1" [(ngModel)]="line.orderedQuantity"></label>
+        <label class="ui-field"><span>Unit Cost</span><input class="input" type="number" min="0" [(ngModel)]="line.unitCost"></label>
+      </div>
+      <label class="ui-field"><span>Expected Delivery</span><input class="input" type="datetime-local" [(ngModel)]="form.expectedDeliveryDate"></label>
+      <label class="ui-field"><span>Notes</span><textarea class="input min-h-28 resize-y" placeholder="Procurement notes" [(ngModel)]="form.notes"></textarea></label>
+      <div class="flex gap-3"><button class="btn-soft flex-1" (click)="close.emit()">Cancel</button><button class="btn-primary flex-1" (click)="submit()">Create Order</button></div>
+    </div>
+  </div>

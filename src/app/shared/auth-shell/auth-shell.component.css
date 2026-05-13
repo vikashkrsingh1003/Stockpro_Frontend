@@ -1,0 +1,77 @@
+.auth-logo-mark {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  box-shadow: 0 10px 24px rgb(15 23 42 / 0.1);
+  flex: 0 0 auto;
+}
+
+.auth-logo-mark svg {
+  width: 48px;
+  height: 44px;
+}
+
+.auth-logo-panel {
+  width: 100%;
+  max-width: 380px;
+  min-height: 410px;
+  border-radius: 40px;
+  background: linear-gradient(135deg, #f7fbff 0%, #ffffff 48%, #fff3df 100%);
+  box-shadow: inset 0 4px 24px rgb(15 23 42 / 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 36px;
+}
+
+.auth-logo-panel svg {
+  width: min(250px, 100%);
+  height: auto;
+}
+
+.logo-line {
+  fill: none;
+  stroke: #050505;
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.logo-face {
+  stroke: #050505;
+  stroke-width: 9;
+  stroke-linejoin: round;
+}
+
+.auth-logo-mark .logo-line {
+  stroke-width: 7;
+}
+
+.auth-logo-mark .logo-face {
+  stroke-width: 6;
+}
+
+.logo-teal {
+  fill: #1499a5;
+}
+
+.logo-dark-teal {
+  fill: #0f8b95;
+}
+
+.logo-light-teal {
+  fill: #17a9b4;
+}
+
+.panel {
+  border-radius: 28px;
+  border-width: 1px;
+  border-color: rgb(243 244 246);
+  background-color: rgb(255 255 255);
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}

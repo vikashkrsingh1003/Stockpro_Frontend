@@ -1,0 +1,15 @@
+<div class="ui-table-card">
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[760px] text-left">
+          <thead class="bg-gray-50/70">
+            <tr><th *ngFor="let c of cols" class="ui-th">{{c}}</th></tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr *ngFor="let row of rows" class="hover:bg-gray-50/80 transition-colors">
+              <td *ngFor="let c of cols" class="ui-td">{{row[c] ?? "—"}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="!rows.length" class="p-8 md:p-16 text-center text-gray-300 font-black uppercase tracking-widest text-xs">No records found</div>
+    </div>

@@ -1,0 +1,214 @@
+:host {
+  display: contents;
+}
+
+.input {
+  height: 3.5rem;
+  width: 100%;
+  border-radius: 1rem;
+  border-width: 1px;
+  border-color: rgb(229 231 235);
+  background-color: rgb(249 250 251);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: rgb(3 7 18);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.input::-moz-placeholder {
+  color: rgb(156 163 175);
+}
+
+.input::placeholder {
+  color: rgb(156 163 175);
+}
+
+.input:focus {
+  border-color: rgb(124 58 237);
+  box-shadow: 0 0 0 2px rgb(233 213 255);
+}
+
+@media (min-width: 768px) {
+  .input {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background-color: rgb(124 58 237);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  color: rgb(255 255 255);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.btn-primary:hover {
+  background-color: rgb(109 40 217);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+}
+
+@media (min-width: 768px) {
+  .btn-primary {
+    border-radius: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+.btn-soft {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background-color: rgb(249 250 251);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  color: rgb(75 85 99);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.btn-soft:hover {
+  background-color: rgb(243 244 246);
+}
+
+@media (min-width: 768px) {
+  .btn-soft {
+    border-radius: 1rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+.ui-field {
+  display: block;
+}
+
+.ui-field span {
+  margin-bottom: 0.75rem;
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 900;
+  color: rgb(55 65 81);
+}
+
+.ui-modal {
+  position: relative;
+  max-height: 92vh;
+  width: 100%;
+}
+
+.ui-modal > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1.5rem ;
+  margin-bottom: 0;
+}
+
+.ui-modal {
+  overflow-y: auto;
+  border-radius: 36px;
+  background-color: rgb(255 255 255);
+  padding: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+
+@media (min-width: 768px) {
+  .ui-modal {
+    padding: 2.5rem;
+  }
+}
+
+.ui-modal-overlay {
+  position: fixed;
+  inset: 0px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(2 6 23 / 0.55);
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+@media (min-width: 640px) {
+  .ui-modal-overlay {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ui-modal-overlay {
+    left: 18rem;
+    top: 5rem;
+  }
+}
+
+.ui-modal h2 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgb(3 7 18);
+}
+
+@media (min-width: 768px) {
+  .ui-modal h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+}
+
+.ui-modal p {
+  margin-top: -1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: rgb(156 163 175);
+}
+
+.ui-modal-close {
+  position: absolute;
+  right: 1.5rem;
+  top: 1.5rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 1rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: rgb(209 213 219);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.ui-modal-close:hover {
+  background-color: rgb(249 250 251);
+  color: rgb(55 65 81);
+}

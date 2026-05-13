@@ -1,0 +1,21 @@
+<section class="app-notifications" aria-live="polite" aria-atomic="true">
+      <article *ngFor="let item of notifications.items$ | async" class="app-notification" [ngClass]="'app-notification-' + item.type">
+        <div class="app-notification-mark">{{icon(item.type)}}</div>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-start justify-between gap-3">
+            <p class="app-notification-title">{{item.title}}</p>
+            <span class="app-notification-time">{{item.time}}</span>
+          </div>
+          <p class="app-notification-message">{{item.message}}</p>
+        </div>
+        <button type="button" class="app-notification-close" (click)="notifications.dismiss(item.id)" aria-label="Dismiss message">×</button>
+      </article>
+    </section>
+    <div *ngIf="notifications.dialog$ | async as dialog" class="app-message-backdrop" role="dialog" aria-modal="true" aria-labelledby="app-message-title">
+      <section class="app-message-modal" [ngClass]="'app-message-modal-' + dialog.type">
+        <div class="app-message-icon">{{icon(dialog.type)}}</div>
+        <h2 id="app-message-title">{{dialog.title}}</h2>
+        <p>{{dialog.message}}</p>
+        <button type="button" class="app-message-ok" (click)="notifications.dismissDialog()">{{dialog.confirmText}}</button>
+      </section>
+    </div>

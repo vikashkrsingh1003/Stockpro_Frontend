@@ -1,0 +1,31 @@
+<div class="ui-modal-overlay">
+    <div class="ui-modal max-w-lg">
+      <button class="ui-modal-close" (click)="close.emit()">×</button>
+      <h2>{{transfer ? "Inter-Node Transfer" : title}}</h2>
+      <p>{{transfer ? "Relocate units to a different warehouse." : "Adjust stock with IN, OUT, RETURN, ISSUE, WRITE_OFF, or exact correction."}}</p>
+      <label class="ui-field" *ngIf="transfer">
+        <span>Destination Warehouse</span>
+        <select class="input" [(ngModel)]="form.targetId">
+          <option value="">Select warehouse</option>
+          <option *ngFor="let warehouse of warehouses" [value]="warehouseId(warehouse)">
+            {{warehouseLabel(warehouse)}}
+          </option>
+        </select>
+      </label>
+      <label class="ui-field" *ngIf="!transfer"><span>Adjustment Type</span><select class="input" [(ngModel)]="form.adjustmentType"><option value="ADJUSTMENT">Set Exact Quantity</option><option value="IN">In</option><option value="OUT">Out</option><option value="RETURN">Return</option><option value="ISSUE">Issue</option><option value="WRITE_OFF">Write-Off</option></select></label>
+      <div class="grid" [ngClass]="transfer ? 'grid-cols-2 gap-4' : 'grid-cols-1'">
+        <label class="ui-field">
+          <span>Product</span>
+          <select class="input" [(ngModel)]="form.sku">
+            <option value="">Select product</option>
+            <option *ngFor="let product of products" [value]="productSku(product)">
+              {{productLabel(product)}}
+            </option>
+          </select>
+        </label>
+        <label class="ui-field"><span>{{transfer ? "Quantity" : form.adjustmentType === "ADJUSTMENT" ? "Final Quantity" : "Quantity"}}</span><input class="input" type="number" [(ngModel)]="form.qty"></label>
+      </div>
+      <label class="ui-field"><span>{{transfer ? "Reason" : "Audit Reason"}}</span><textarea class="input min-h-28 resize-y" [(ngModel)]="form.reason"></textarea></label>
+      <button class="w-full" [ngClass]="transfer ? 'btn-dark' : 'btn-primary'" (click)="save.emit(form)">{{transfer ? "⇄ Authorize Transfer" : "▣ Save Adjustment"}}</button>
+    </div>
+  </div>

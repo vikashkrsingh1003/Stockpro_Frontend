@@ -1,0 +1,27 @@
+<div class="max-w-6xl mx-auto">
+    <a [routerLink]="back" class="inline-flex items-center gap-2 text-gray-500 hover:text-[#7c3aed] mb-6 font-black text-sm">← Back</a>
+    <div class="ui-form-card">
+      <div class="ui-form-hero">
+        <div class="ui-form-icon">▣</div>
+        <div>
+          <h1>{{title}}</h1>
+          <p>{{subtitle}}</p>
+        </div>
+      </div>
+      <form class="p-5 md:p-8 lg:p-10 grid md:grid-cols-2 gap-5 md:gap-7" (ngSubmit)="save.emit()">
+        <label *ngFor="let f of fields" class="ui-field" [class.md:col-span-2]="wideField(f) || isImageUrlField(f)">
+          <span>{{label(f)}}</span>
+          <div *ngIf="isImageUrlField(f)" class="product-upload">
+            <div class="product-upload-preview">
+              <img *ngIf="model[f]" [src]="model[f]" alt="Product image URL preview">
+              <span *ngIf="!model[f]">▣</span>
+            </div>
+            <input class="input" type="url" [(ngModel)]="model[f]" [name]="f" placeholder="https://example.com/product-image.jpg">
+          </div>
+          <textarea *ngIf="!isImageUrlField(f) && wideField(f)" class="input min-h-32 resize-y" [(ngModel)]="model[f]" [name]="f"></textarea>
+          <input *ngIf="!isImageUrlField(f) && !wideField(f)" class="input" [type]="type(f)" [(ngModel)]="model[f]" [name]="f" [placeholder]="placeholder(f)">
+        </label>
+        <div class="md:col-span-2 flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 pt-2"><a [routerLink]="back" class="btn-soft">Cancel</a><button class="btn-primary">Save Changes</button></div>
+      </form>
+    </div>
+  </div>

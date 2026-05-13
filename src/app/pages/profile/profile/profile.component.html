@@ -1,0 +1,61 @@
+<div class="profile-page">
+  <section class="profile-hero">
+    <div class="profile-identity">
+      <div class="profile-avatar">{{initials()}}</div>
+      <div>
+        <p class="profile-kicker">Account Settings</p>
+        <h1>Update Profile</h1>
+        <p>Keep your StockPro account details accurate for team access and audit records.</p>
+      </div>
+    </div>
+    <button type="button" class="profile-back" (click)="cancel()">Back to Dashboard</button>
+  </section>
+
+  <section class="profile-grid">
+    <aside class="profile-summary">
+      <div class="summary-avatar">{{initials()}}</div>
+      <h2>{{form.fullName || "Your Profile"}}</h2>
+      <p>{{form.email}}</p>
+      <span>{{form.role || "USER"}}</span>
+    </aside>
+
+    <form class="profile-form" (ngSubmit)="save()">
+      <div class="form-heading">
+        <h2>Personal Details</h2>
+        <p *ngIf="loading">Loading your profile...</p>
+        <p *ngIf="!loading">Email and role are controlled by account permissions.</p>
+      </div>
+
+      <label class="profile-field">
+        <span>Full Name</span>
+        <input name="fullName" [(ngModel)]="form.fullName" placeholder="Enter full name" [disabled]="loading || saving">
+      </label>
+
+      <label class="profile-field">
+        <span>Email</span>
+        <input name="email" [(ngModel)]="form.email" disabled>
+      </label>
+
+      <label class="profile-field">
+        <span>Phone</span>
+        <input name="phone" [(ngModel)]="form.phone" placeholder="Enter phone number" [disabled]="loading || saving">
+      </label>
+
+      <label class="profile-field">
+        <span>Department</span>
+        <input name="department" [(ngModel)]="form.department" placeholder="Warehouse / Sales / Admin" [disabled]="loading || saving">
+      </label>
+
+      <label class="profile-field">
+        <span>Role</span>
+        <input name="role" [(ngModel)]="form.role" disabled>
+      </label>
+
+      <div class="profile-actions">
+        <button type="button" class="btn-secondary" (click)="load()" [disabled]="loading || saving">Reset</button>
+        <button type="button" class="btn-secondary" (click)="cancel()" [disabled]="saving">Cancel</button>
+        <button class="btn-primary" [disabled]="loading || saving">{{saving ? "Saving..." : "Save Changes"}}</button>
+      </div>
+    </form>
+  </section>
+</div>

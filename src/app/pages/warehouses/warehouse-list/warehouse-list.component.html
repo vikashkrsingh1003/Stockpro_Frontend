@@ -1,0 +1,35 @@
+<div class="page-shell">
+      <header-card title="Warehouse Hub" subtitle="Monitor capacity and manage global inventory nodes.">
+        <button class="btn-primary" *ngIf="canManageWarehouses" routerLink="/warehouses/add">+ New Warehouse</button>
+      </header-card>
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
+        <div *ngFor="let w of warehouses" class="group bg-white min-h-[260px] p-5 md:p-6 rounded-[24px] border border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all">
+          <div class="flex items-start justify-between mb-14">
+            <div class="w-11 h-11 rounded-2xl bg-purple-50 text-[#5b21b6] flex items-center justify-center text-2xl leading-none">▧</div>
+            <span class="badge" [ngClass]="w.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'">{{w.isActive ? 'Active' : 'Inactive'}}</span>
+          </div>
+
+          <h3 class="text-xl md:text-2xl font-black text-gray-950 mb-3 truncate">{{w.name}}</h3>
+          <p class="text-gray-500 text-sm mb-6 flex items-center gap-2 truncate"><span class="text-gray-400">⌖</span>{{w.location || 'No location set'}}</p>
+
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-black text-gray-500 uppercase tracking-widest">Usage</span>
+            <span class="text-xs font-black text-gray-950">{{percent(w)}}%</span>
+          </div>
+          <div class="h-2 bg-gray-100 rounded-full overflow-hidden mb-4">
+            <div class="h-full bg-[#6d28d9] rounded-full" [style.width.%]="percent(w)"></div>
+          </div>
+          <p class="text-xs text-gray-500 mb-8">{{w.usedCapacity || 0}} / {{w.capacity || 0}} Units Used</p>
+
+          <div class="grid grid-cols-[1fr_48px_1fr] gap-3">
+            <button class="warehouse-action" *ngIf="canManageWarehouses" [routerLink]="['/warehouses/edit', w.warehouseId]">
+              <span class="text-lg">✎</span><span>Edit</span>
+            </button>
+            <button class="warehouse-power" *ngIf="canManageWarehouses" [ngClass]="w.isActive ? 'text-red-500 hover:bg-red-50' : 'text-green-600 hover:bg-green-50'" (click)="toggleStatus(w)" [title]="w.isActive ? 'Deactivate warehouse' : 'Activate warehouse'">⏻</button>
+            <button class="warehouse-action" [class.col-span-3]="!canManageWarehouses" [routerLink]="['/warehouses', w.warehouseId]">
+              <span>Manage</span><span class="text-lg">→</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,86 @@
+<div class="page-shell">
+      <div class="node-hero">
+        <div class="flex items-center gap-5 min-w-0">
+          <button class="node-back" routerLink="/warehouses">←</button>
+          <div class="min-w-0">
+            <h1>Node Control</h1>
+            <p>Operational Hub #{{id}}</p>
+          </div>
+        </div>
+        <div class="node-actions">
+          <button class="node-adjust" (click)="adjustOpen=true"><span>＋</span> Adjust Stock</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_360px] gap-6 md:gap-8">
+        <section class="node-panel node-inventory">
+          <div class="node-panel-head">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="node-panel-icon">▧</span>
+              <h2>Live Inventory List</h2>
+              <span class="node-count">{{visibleInventory.length}} item{{visibleInventory.length === 1 ? '' : 's'}}</span>
+            </div>
+            <button class="node-hide" (click)="hideZero = !hideZero">{{hideZero ? 'Show all stock' : 'Hide zero stock'}}</button>
+          </div>
+
+          <div class="overflow-x-auto max-h-[620px]">
+            <table class="w-full min-w-[760px] text-left">
+              <thead class="bg-white sticky top-0 z-10">
+                <tr>
+                  <th class="node-th">Product Info</th>
+                  <th class="node-th">Category</th>
+                  <th class="node-th text-center">In Stock</th>
+                  <th class="node-th text-center">Health</th>
+                  <th class="node-th text-right">Min Threshold</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr *ngFor="let item of visibleInventory" class="node-row">
+                  <td class="node-td">
+                    <div class="node-product">
+                      <span class="node-product-icon">▧</span>
+                      <div class="min-w-0">
+                        <h3>{{productName(item)}}</h3>
+                        <p>SKU: {{item.sku || item.productSku || ('PROD-' + item.productId)}}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="node-td"><span class="node-category">{{item.category || item.productCategory || 'Electronic'}}</span></td>
+                  <td class="node-td text-center"><strong class="node-stock">{{item.quantity || 0}}</strong></td>
+                  <td class="node-td text-center"><span class="node-health" [ngClass]="healthClass(item)">{{health(item)}}</span></td>
+                  <td class="node-td text-right"><span class="node-threshold">{{item.minThreshold || item.threshold || 0}} units</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="!visibleInventory.length" class="p-10 md:p-16 text-center text-xs font-black uppercase tracking-widest text-gray-300">No inventory in this node</div>
+        </section>
+
+        <aside class="node-panel node-audit">
+          <div class="node-panel-head">
+            <div class="flex items-center gap-3">
+              <span class="node-panel-icon">↺</span>
+              <h2>Security Audit Log</h2>
+            </div>
+            <button class="node-refresh" (click)="load()">⟳</button>
+          </div>
+
+          <div class="node-audit-list">
+            <article *ngFor="let m of history" class="node-audit-card">
+              <div class="flex items-start justify-between gap-3">
+                <span class="node-audit-type" [ngClass]="movementClass(m.type)">{{movementLabel(m.type)}}</span>
+                <time>{{m.timestamp | date:'shortTime'}}</time>
+              </div>
+              <h3>Product #{{m.productId}}</h3>
+              <p>{{signedQty(m)}}{{m.quantity || 0}}</p>
+              <div class="node-reason">"{{m.reason || 'No reason recorded'}}"</div>
+            </article>
+          </div>
+
+          <div *ngIf="!history.length" class="p-8 text-center text-xs font-black uppercase tracking-widest text-gray-300">No audit records</div>
+        </aside>
+      </div>
+
+      <stock-modal *ngIf="adjustOpen" title="Stock Adjustment" (close)="adjustOpen=false" (save)="adjust($event)" />
+    </div>

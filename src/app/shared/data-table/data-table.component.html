@@ -1,0 +1,48 @@
+<div class="product-table-card">
+      <div class="overflow-x-auto">
+      <table class="w-full min-w-[920px] text-left">
+        <thead><tr>
+          <th class="product-th">Product Info</th>
+          <th class="product-th">Category</th>
+          <th class="product-th">Price</th>
+          <th class="product-th">Inventory</th>
+          <th class="product-th text-center">Actions</th>
+        </tr></thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr *ngFor="let p of rows" class="product-row">
+            <td class="product-td">
+              <div class="flex items-center gap-4">
+                <div class="product-thumb">
+                  <img *ngIf="p.imageUrl; else productIcon" [src]="imageSrc(p.imageUrl)" [alt]="p.name || 'Product photo'">
+                  <ng-template #productIcon>▣</ng-template>
+                </div>
+                <div class="min-w-0">
+                  <p class="font-black text-gray-950 text-sm md:text-base truncate">{{p.name}}</p>
+                  <p class="text-[11px] text-gray-400 font-medium mt-1">SKU: {{p.sku}}</p>
+                </div>
+              </div>
+            </td>
+            <td class="product-td"><span class="product-category">{{p.category || "General"}}</span></td>
+            <td class="product-td font-black text-gray-950 text-base">₹{{p.sellingPrice || 0}}</td>
+            <td class="product-td">
+              <div class="flex flex-col gap-1.5">
+                <span class="product-stock-status" [ngClass]="stockClass(p)">
+                  <span class="h-2 w-2 rounded-full" [ngClass]="stockDotClass(p)"></span>{{stockLabel(p)}}
+                </span>
+                <span class="product-stock-count" [ngClass]="stockCountClass(p)">{{p.totalStock || 0}} Units Global</span>
+              </div>
+            </td>
+            <td class="product-td">
+              <div class="flex items-center justify-center gap-2">
+                <a class="product-icon-btn" [routerLink]="['/products', p.productId]" title="View product">◉</a>
+                <a class="product-icon-btn" *ngIf="canManage" [routerLink]="['/products/edit', p.productId]" title="Edit product">✎</a>
+                <button class="product-icon-btn" *ngIf="canManage" (click)="deactivate.emit(p)" title="Deactivate product">⌫</button>
+                <button class="product-icon-btn" (click)="refresh.emit()" title="Refresh products">×</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <div *ngIf="!rows.length" class="p-8 md:p-16 text-center text-gray-300 font-black uppercase tracking-widest text-xs">No products found</div>
+    </div>

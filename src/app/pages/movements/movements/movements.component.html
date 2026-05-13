@@ -1,0 +1,120 @@
+<div class="page-shell">
+      <header-card title="Stock Movements" subtitle="Full audit trail across all warehouses.">
+        <button class="btn-soft" (click)="load()">↻</button>
+        <button class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-sm font-black rounded-2xl px-5 py-3 transition-all" (click)="exportCsv()">⇩ Export CSV</button>
+      </header-card>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <button class="movement-action bg-purple-50 text-purple-700 text-left" (click)="adjustOpen = !adjustOpen; transferOpen = false"><strong>＋ Stock Adjustment</strong><span>Set corrected quantity</span></button>
+        <button class="movement-action bg-blue-50 text-blue-700 text-left" (click)="transferOpen = !transferOpen; adjustOpen = false"><strong>⇆ Transfer Stock</strong><span>Between warehouses</span></button>
+      </div>
+
+      <div *ngIf="adjustOpen" class="panel p-5 md:p-7 space-y-4">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="font-black text-gray-950 text-xl">Stock Adjustment</h2>
+            <p class="text-xs font-bold text-gray-400">Use IN, OUT, RETURN, ISSUE, WRITE_OFF, or exact correction.</p>
+          </div>
+          <button class="btn-soft" (click)="adjustOpen=false">×</button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3 md:gap-4">
+          <select class="input" [(ngModel)]="adjustForm.sku">
+            <option value="">Select Product</option>
+            <option *ngFor="let product of productOptions" [value]="productSku(product)">
+              {{productLabel(product)}}
+            </option>
+          </select>
+          <select class="input" [(ngModel)]="adjustForm.warehouseId">
+            <option value="">Select Warehouse</option>
+            <option *ngFor="let warehouse of warehouseOptions" [value]="warehouseId(warehouse)">
+              {{warehouseLabel(warehouse)}}
+            </option>
+          </select>
+          <select class="input" [(ngModel)]="adjustForm.adjustmentType"><option value="ADJUSTMENT">Set Exact</option><option value="IN">In</option><option value="OUT">Out</option><option value="RETURN">Return</option><option value="ISSUE">Issue</option><option value="WRITE_OFF">Write-Off</option></select>
+          <input class="input" type="number" [placeholder]="adjustForm.adjustmentType === 'ADJUSTMENT' ? 'Final Quantity' : 'Quantity'" [(ngModel)]="adjustForm.qty">
+          <input class="input" placeholder="Audit Reason" [(ngModel)]="adjustForm.reason">
+        </div>
+        <button class="btn-primary" (click)="adjust()">Save Adjustment</button>
+      </div>
+
+      <div *ngIf="transferOpen" class="panel p-5 md:p-7 space-y-4">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="font-black text-gray-950 text-xl">Transfer Stock</h2>
+            <p class="text-xs font-bold text-gray-400">Movement service owns transfer logging and calls warehouse internally.</p>
+          </div>
+          <button class="btn-soft" (click)="transferOpen=false">×</button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3 md:gap-4">
+          <select class="input" [(ngModel)]="transferForm.sku">
+            <option value="">Select Product</option>
+            <option *ngFor="let product of productOptions" [value]="productSku(product)">
+              {{productLabel(product)}}
+            </option>
+          </select>
+          <select class="input" [(ngModel)]="transferForm.fromWarehouse">
+            <option value="">From Warehouse</option>
+            <option *ngFor="let warehouse of warehouseOptions" [value]="warehouseId(warehouse)">
+              {{warehouseLabel(warehouse)}}
+            </option>
+          </select>
+          <select class="input" [(ngModel)]="transferForm.toWarehouse">
+            <option value="">To Warehouse</option>
+            <option *ngFor="let warehouse of warehouseOptions" [value]="warehouseId(warehouse)">
+              {{warehouseLabel(warehouse)}}
+            </option>
+          </select>
+          <input class="input" type="number" placeholder="Quantity" [(ngModel)]="transferForm.qty">
+          <input class="input" placeholder="Reason" [(ngModel)]="transferForm.reason">
+        </div>
+        <button class="btn-primary" (click)="transfer()">Authorize Transfer</button>
+      </div>
+
+      <div class="panel p-5 md:p-7 space-y-4">
+        <div class="flex items-center gap-2 text-[11px] font-black text-gray-500 uppercase tracking-widest">▽ Filters</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3 md:gap-4">
+          <select class="input" [(ngModel)]="filters.warehouseId">
+            <option value="">All Warehouses</option>
+            <option *ngFor="let warehouse of warehouseOptions" [value]="warehouseId(warehouse)">
+              {{warehouseLabel(warehouse)}}
+            </option>
+          </select>
+          <select class="input" [(ngModel)]="filters.productId">
+            <option value="">All Products</option>
+            <option *ngFor="let product of productOptions" [value]="productId(product)">
+              {{productLabel(product)}}
+            </option>
+          </select>
+          <select class="input" [(ngModel)]="filters.type"><option value="">All Types</option><option>IN</option><option>OUT</option><option>TRANSFER</option><option>ADJUSTMENT</option><option>ISSUE</option><option>WRITE_OFF</option><option>RETURN</option></select>
+          <input class="input" type="datetime-local" [(ngModel)]="filters.from">
+          <input class="input" type="datetime-local" [(ngModel)]="filters.to">
+        </div>
+        <button class="btn-primary" (click)="load()">Apply Filters</button>
+      </div>
+
+      <div class="ui-table-card">
+        <div class="p-5 md:p-7 border-b border-gray-100 flex items-center gap-3">
+          <span class="text-[#7c3aed] text-xl">〽</span>
+          <h2 class="font-black text-gray-950 text-xl">Movement Log</h2>
+          <span class="badge bg-gray-100 text-gray-500">{{movements.length}} records</span>
+        </div>
+        <div class="overflow-x-auto max-h-[560px]">
+          <table class="w-full min-w-[980px] text-left">
+            <thead class="bg-gray-50/70 sticky top-0 z-10"><tr><th class="ui-th">Type</th><th class="ui-th">Warehouse</th><th class="ui-th">Product</th><th class="ui-th">Qty</th><th class="ui-th">Balance After</th><th class="ui-th">Reason</th><th class="ui-th">Performed By</th><th class="ui-th">Timestamp</th></tr></thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr *ngFor="let m of movements" class="hover:bg-gray-50/80">
+                <td class="ui-td"><span class="badge" [ngClass]="typeClass(m.type)">{{typeLabel(m.type)}}</span></td>
+                <td class="ui-td font-black">#{{m.warehouseId}}</td>
+                <td class="ui-td font-black">#{{m.productId}}</td>
+                <td class="ui-td font-black text-gray-950">{{m.quantity}}</td>
+                <td class="ui-td">{{m.balanceAfter ?? '—'}}</td>
+                <td class="ui-td italic">"{{m.reason || 'No reason'}}"</td>
+                <td class="ui-td font-bold">{{m.performedBy || 'SYSTEM'}}</td>
+                <td class="ui-td">{{m.timestamp | date:'medium'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="!movements.length" class="p-8 md:p-16 text-center text-gray-300 font-black uppercase tracking-widest text-xs">No movement records found</div>
+      </div>
+    </div>
