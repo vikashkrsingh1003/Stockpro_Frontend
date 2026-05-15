@@ -2,11 +2,13 @@
 
 Angular conversion of the StockPro React frontend.
 
-It keeps the same backend API base URL:
+It reads the backend API base URL from `.env`:
 
 ```txt
 http://localhost:8080/api/v1
 ```
+
+Copy `.env.example` to `.env` if needed, then update values for your local backend.
 
 ## Run
 

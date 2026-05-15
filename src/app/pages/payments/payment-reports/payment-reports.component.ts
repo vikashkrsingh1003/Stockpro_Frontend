@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { PaymentService, ProductService, SupplierService } from "../../../core/api";
+import { RAZORPAY_CHECKOUT_SCRIPT_URL, RAZORPAY_MAX_AMOUNT_INR } from "../../../core/api-config";
 import { NotificationService } from "../../../core/services/notification.service";
 import { pageImports } from "../../page-imports";
 
@@ -14,7 +15,7 @@ declare global {
   styleUrl: './payment-reports.component.css'
 })
 export class PaymentReportsPage {
-  readonly razorpayMaxAmountInr = 500000;
+  readonly razorpayMaxAmountInr = RAZORPAY_MAX_AMOUNT_INR;
   reports: any[] = [];
   suppliers: Record<string, string> = {};
   products: Record<string, string> = {};
@@ -82,7 +83,7 @@ export class PaymentReportsPage {
     if (window.Razorpay) return Promise.resolve();
     return new Promise<void>((resolve, reject) => {
       const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.src = RAZORPAY_CHECKOUT_SCRIPT_URL;
       script.onload = () => resolve();
       script.onerror = () => reject();
       document.body.appendChild(script);

@@ -7,13 +7,13 @@
   },
   "scripts": {
     "ng": "ng",
-    "prestart": "node scripts/check-node.js",
+    "prestart": "node scripts/preflight.js",
     "start": "ng serve",
-    "prebuild": "node scripts/check-node.js",
+    "prebuild": "node scripts/preflight.js",
     "build": "ng build",
-    "pretest": "node scripts/check-node.js",
+    "pretest": "node scripts/preflight.js",
     "test": "ng test --watch=false --browsers=ChromeHeadless",
-    "prewatch": "node scripts/check-node.js",
+    "prewatch": "node scripts/preflight.js",
     "watch": "ng build --watch --configuration development"
   },
   "dependencies": {
