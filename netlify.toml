@@ -4,13 +4,13 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "http://13.232.138.180:8080/api/:splat"
+  to = "http://13.232.138.180.nip.io:8080/api/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/oauth2/*"
-  to = "http://13.232.138.180:8080/oauth2/:splat"
+  to = "http://13.232.138.180.nip.io:8080/oauth2/:splat"
   status = 200
   force = true
 
