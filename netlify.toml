@@ -16,7 +16,7 @@
 
 [[redirects]]
   from = "/login/oauth2/*"
-  to = "http://13.232.138.180:8080/login/oauth2/:splat"
+  to = "http://13.232.138.180.nip.io:8080/login/oauth2/:splat"
   status = 200
   force = true
 
