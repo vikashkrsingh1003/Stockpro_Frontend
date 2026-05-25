@@ -34,7 +34,7 @@
             </td>
             <td class="product-td">
               <div class="flex items-center justify-center gap-2">
-                <a class="product-icon-btn" [routerLink]="['/products', p.productId]" title="View product">◉</a>
+                <a class="product-icon-btn" [routerLink]="['/products', p.productId]" title="View product"> </a>
                 <a class="product-icon-btn" *ngIf="canManage" [routerLink]="['/products/edit', p.productId]" title="Edit product">✎</a>
                 <button class="product-icon-btn" *ngIf="canManage" (click)="deactivate.emit(p)" title="Deactivate product">⌫</button>
                 <button class="product-icon-btn" (click)="refresh.emit()" title="Refresh products">×</button>
