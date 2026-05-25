@@ -32,7 +32,8 @@
               <tr><th>Severity</th><th>Type</th><th>Title</th><th>Message</th><th>Product</th><th>Date & Time</th><th>Status</th></tr>
             </thead>
             <tbody>
-              <tr *ngFor="let a of alerts" class="alert-row">
+              <tr *ngFor="let a of alerts" c
+              98plass="alert-row">
                 <td><span class="alert-severity" [ngClass]="severityClass(a.severity)">● {{a.severity || 'INFO'}}</span></td>
                 <td><strong>{{typeLabel(a.alertType)}}</strong></td>
                 <td><strong class="alert-title">{{a.title || 'Alert'}}</strong></td>
